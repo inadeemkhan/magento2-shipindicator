@@ -1,5 +1,5 @@
 {
-    "name": "nadeem/module-freeshippingindicator",
+    "name": "nadeemsoft/module-shipindicator",
     "description": "Magento2 extension to show indicator for free shipping on cart page.",
     "type": "magento2-module",
     "license": "proprietary",
@@ -16,7 +16,7 @@
             "registration.php"
         ],
         "psr-4": {
-            "Nadeem\\FreeShippingIndicator\\": ""
+            "NadeemSoft\\ShipIndicator\\": ""
         }
     }
 }

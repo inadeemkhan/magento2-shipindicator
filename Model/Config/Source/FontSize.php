@@ -1,24 +1,24 @@
 <?php
-/**
- * Copyright © Chris Mallory All rights reserved.
- * See COPYING.txt for license details.
- */
 declare(strict_types=1);
 
-namespace Nadeem\FreeShippingIndicator\Model\Config\Source;
+namespace NadeemSoft\ShipIndicator\Model\Config\Source;
 
 use Magento\Framework\Data\OptionSourceInterface;
 
 /**
- * Class FontSize
- * @package Nadeem\FreeShippingIndicator\Model\Config\Source
+ * FontSize source model for system configuration.
+ *
+ * Provides a list of selectable font sizes (in pixels) for the
+ * Free Shipping Indicator customization settings.
  */
 class FontSize implements OptionSourceInterface
 {
     /**
-     * @return array
+     * Return available font size options for configuration dropdown.
+     *
+     * @return array<int, array<string, string>> Array of option values and labels
      */
-    public function toOptionArray() : array
+    public function toOptionArray(): array
     {
         return [
             ['value' => '', 'label' => __('-- Select a value --')],

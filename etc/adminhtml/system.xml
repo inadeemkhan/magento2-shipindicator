@@ -1,98 +1,147 @@
 <?xml version="1.0" ?>
-<!-- 
-/**
- * Copyright © Chris Mallory All rights reserved.
- * See COPYING.txt for license details.
- */ 
- -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
-	<system>
-		<tab id="nadeem" translate="label" sortOrder="999">
-			<label>Nadeem</label>
-		</tab>
-		<section id="free_shipping_indicator" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-			<label>Free Shipping Indicator</label>
-			<tab>nadeem</tab>
-			<resource>Nadeem_FreeShippingIndicator::config_nadeem_freeshippingindicator</resource>
-			<group id="general" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-				<label>Indicator Configuration</label>
-				<field id="is_enable" type="select" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Enable</label>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-					<comment>Enable Free Shpping Indicator To Show On Cart Page Summery.</comment>
-				</field>
-				<field id="use_core_freeshipping_config" type="select" sortOrder="30" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Use Core Freeshipping Method Config</label>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-					<comment>The free shipping progress bar will indicate whether the core free shipping method is available if this setting is set to yes. 
-					You can use a custom configuration with the fields that will appear below this field if the value is set to no.</comment>
-					<depends>
-                        <field id="is_enable">1</field>
-                    </depends>
-				</field>
-				<field id="order_min_total" type="text" sortOrder="40" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Order Minimum Total</label>
-					<depends>
-                        <field id="is_enable">1</field>
-						<field id="use_core_freeshipping_config">0</field>
-                    </depends>
-				</field>
-				<field id="use_order_subtotal" type="select" sortOrder="50" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Use Subtotal</label>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-					<comment>The grand total will be used if set to no.</comment>
-					<depends>
-                        <field id="is_enable">1</field>
-						<field id="use_core_freeshipping_config">0</field>
-                    </depends>
-				</field>
-				<field id="order_subtotal_includes_discount" type="select" sortOrder="60" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Order Subtotal Includes Discount</label>
-					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-					<comment>If this option is selected, the minimum order value must exceed the subtotal minus any discounts.</comment>
-					<depends>
-                        <field id="is_enable">1</field>
-						<field id="use_core_freeshipping_config">0</field>
-						<field id="use_order_subtotal">1</field>
-                    </depends>
-				</field>
-			</group>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
 
-			<group id="customization" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-				<label>Indicator Customization</label>
-				<field id="font_size" type="select" sortOrder="10" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Font Size</label>
-					<comment></comment>
-					<source_model>Nadeem\FreeShippingIndicator\Model\Config\Source\FontSize</source_model>
-				</field>
-				<field id="text_message" type="textarea" sortOrder="20" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Text Message</label>
-					<comment></comment>
-				</field>
-				<field id="message_text_color" translate="label" sortOrder="30" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+    <system>
+        <tab id="nadeemsoft" translate="label" sortOrder="999">
+            <label>NadeemSoft</label>
+        </tab>
+
+        <section id="ship_indicator"
+                 sortOrder="10"
+                 showInWebsite="1"
+                 showInStore="1"
+                 showInDefault="1"
+                 translate="label">
+            <label>Free Shipping Indicator</label>
+            <tab>nadeemsoft</tab>
+            <resource>NadeemSoft_ShipIndicator::config_shipindicator</resource>
+
+            <group id="general"
+                   sortOrder="10"
+                   showInWebsite="1"
+                   showInStore="1"
+                   showInDefault="1"
+                   translate="label">
+                <label>Indicator Configuration</label>
+
+                <field id="is_enable" type="select" sortOrder="20"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable the Free Shipping Indicator to display on the cart summary page.</comment>
+                </field>
+
+                <field id="use_core_freeshipping_config" type="select" sortOrder="30"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Use Core Free Shipping Method Config</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If set to Yes, the indicator will use Magento's core free shipping method configuration. If set to No, custom configuration fields below will be used.</comment>
+                    <depends>
+                        <field id="is_enable">1</field>
+                    </depends>
+                </field>
+
+                <field id="order_min_total" type="text" sortOrder="40"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Order Minimum Total</label>
+                    <comment>Minimum order total required for free shipping when not using core config.</comment>
+                    <depends>
+                        <field id="is_enable">1</field>
+                        <field id="use_core_freeshipping_config">0</field>
+                    </depends>
+                </field>
+
+                <field id="use_order_subtotal" type="select" sortOrder="50"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Use Subtotal</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If set to No, the grand total will be used instead.</comment>
+                    <depends>
+                        <field id="is_enable">1</field>
+                        <field id="use_core_freeshipping_config">0</field>
+                    </depends>
+                </field>
+
+                <field id="order_subtotal_includes_discount" type="select" sortOrder="60"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Order Subtotal Includes Discount</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>If set to Yes, the subtotal minus discounts will be used to determine eligibility.</comment>
+                    <depends>
+                        <field id="is_enable">1</field>
+                        <field id="use_core_freeshipping_config">0</field>
+                        <field id="use_order_subtotal">1</field>
+                    </depends>
+                </field>
+            </group>
+
+            <group id="customization"
+                   sortOrder="20"
+                   showInWebsite="1"
+                   showInStore="1"
+                   showInDefault="1"
+                   translate="label">
+                <label>Indicator Customization</label>
+
+                <field id="font_size" type="select" sortOrder="10"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Font Size</label>
+                    <source_model>NadeemSoft\ShipIndicator\Model\Config\Source\FontSize</source_model>
+                    <comment>Select the font size for the indicator message.</comment>
+                </field>
+
+                <field id="text_message" type="textarea" sortOrder="20"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Text Message</label>
+                    <comment>Message displayed when free shipping is not yet achieved.</comment>
+                </field>
+
+                <field id="message_text_color" type="text" sortOrder="30"
+                       showInDefault="1" showInWebsite="0" showInStore="0"
+                       translate="label">
                     <label>Message Text Color</label>
-                    <frontend_model>Nadeem\FreeShippingIndicator\Block\Colorpicker</frontend_model>
-					<comment></comment>
+                    <frontend_model>NadeemSoft\ShipIndicator\Block\Colorpicker</frontend_model>
+                    <comment>Choose the text color for the indicator message.</comment>
                 </field>
-				<field id="message_background" translate="label" sortOrder="40" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+
+                <field id="message_background" type="text" sortOrder="40"
+                       showInDefault="1" showInWebsite="0" showInStore="0"
+                       translate="label">
                     <label>Message Background</label>
-                    <frontend_model>Nadeem\FreeShippingIndicator\Block\Colorpicker</frontend_model>
-					<comment></comment>
+                    <frontend_model>NadeemSoft\ShipIndicator\Block\Colorpicker</frontend_model>
+                    <comment>Choose the background color for the indicator message.</comment>
                 </field>
-				<field id="progress_bar_color" translate="label" sortOrder="50" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+
+                <field id="progress_bar_color" type="text" sortOrder="50"
+                       showInDefault="1" showInWebsite="0" showInStore="0"
+                       translate="label">
                     <label>Progress Bar Color</label>
-                    <frontend_model>Nadeem\FreeShippingIndicator\Block\Colorpicker</frontend_model>
-					<comment></comment>
+                    <frontend_model>NadeemSoft\ShipIndicator\Block\Colorpicker</frontend_model>
+                    <comment>Choose the color of the progress bar.</comment>
                 </field>
-				<field id="eligible_text_message" type="textarea" sortOrder="60" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Message if Order is Eligible</label>
-					<comment></comment>
-				</field>
-				<field id="custom_css" type="textarea" sortOrder="70" showInWebsite="1" showInStore="1" showInDefault="1" translate="label">
-					<label>Custom CSS</label>
-					<comment></comment>
-				</field>
-			</group>
-		</section>
-	</system>
+
+                <field id="eligible_text_message" type="textarea" sortOrder="60"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Message if Order is Eligible</label>
+                    <comment>Message displayed when the order qualifies for free shipping.</comment>
+                </field>
+
+                <field id="custom_css" type="textarea" sortOrder="70"
+                       showInWebsite="1" showInStore="1" showInDefault="1"
+                       translate="label">
+                    <label>Custom CSS</label>
+                    <comment>Optional custom CSS styles for the indicator block.</comment>
+                </field>
+            </group>
+        </section>
+    </system>
 </config>

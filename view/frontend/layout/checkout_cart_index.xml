@@ -1,22 +1,20 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © Chris Mallory All rights reserved.
- * See COPYING.txt for license details.
- */
--->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
     <head>
-        <css src="Nadeem_FreeShippingIndicator::css/_styles.css" rel="stylesheet" type="text/css"/>
+        <css src="NadeemSoft_ShipIndicator::css/_styles.css"/>
+        <css src="NadeemSoft_ShipIndicator::css/indicator.css"/>
     </head>
+
     <body>
         <referenceContainer name="cart.summary">
-            <block name="checkout.cart.freeshipping.indicator"
+            <block class="NadeemSoft\ShipIndicator\Block\Cart\Indicator"
+                   name="checkout.cart.shipindicator"
+                   template="NadeemSoft_ShipIndicator::cart/summary/indicator.phtml"
                    before="checkout.cart.shipping"
-                   template="Nadeem_FreeShippingIndicator::cart/summary/indicator.phtml"
-                   ifconfig="free_shipping_indicator/general/is_enable"
-                   class="Nadeem\FreeShippingIndicator\Block\Cart\Indicator">
-            </block>
+                   ifconfig="ship_indicator/general/is_enable"/>
         </referenceContainer>
     </body>
 </page>
