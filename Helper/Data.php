@@ -1,177 +1,223 @@
 <?php
-/**
- * Copyright © Chris Mallory All rights reserved.
- * See COPYING.txt for license details.
- */
 declare(strict_types=1);
 
-namespace Nadeem\FreeShippingIndicator\Helper;
+namespace NadeemSoft\ShipIndicator\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
 
+/**
+ * Helper class for NadeemSoft_ShipIndicator module.
+ *
+ * Provides access to system configuration values related to
+ * free shipping indicator logic and customization.
+ */
 class Data extends AbstractHelper
 {
     /**
-     * @var CORE_FREE_SHIPPING_STORE_CONFIG_PATH
+     * Path to Magento core free shipping configuration.
      */
     protected const CORE_FREE_SHIPPING_STORE_CONFIG_PATH = 'carriers/freeshipping/';
 
     /**
-     * @var FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH
+     * Path to module general configuration.
      */
-    protected const FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH = 'free_shipping_indicator/general/';
+    protected const FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH = 'ship_indicator/general/';
 
     /**
-     * @var INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH
+     * Path to module customization configuration.
      */
-    protected const INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH = 'free_shipping_indicator/customization/';
+    protected const INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH = 'ship_indicator/customization/';
 
     /**
-     * @var ScopeConfigInterface $scopeConfig
+     * Scope configuration instance.
+     *
+     * @var ScopeConfigInterface
      */
-    protected $scopeConfig;
+    protected ScopeConfigInterface $scopeConfig;
 
     /**
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-     * @param \Magento\Checkout\Model\Session $session
+     * Data constructor.
+     *
+     * @param Context $context Magento helper context
+     * @param ScopeConfigInterface $scopeConfig Scope configuration interface
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        Context $context,
+        ScopeConfigInterface $scopeConfig
     ) {
         $this->scopeConfig = $scopeConfig;
         parent::__construct($context);
     }
 
     /**
+     * Check if the Free Shipping Indicator module is enabled.
+     *
      * @return bool
      */
-    public function isEnable()
+    public function isEnable(): bool
     {
-        return $this->scopeConfig->getValue(
-                self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH 
-                . 'is_enable', ScopeInterface::SCOPE_STORE );
+        return (bool)$this->scopeConfig->getValue(
+            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'is_enable',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return string
+     * Check if Magento core free shipping configuration should be used.
+     *
+     * @return bool
      */
-    public function getCoreShippingConfig()
+    public function getCoreShippingConfig(): bool
     {
-        return $this->scopeConfig->getValue(
-                self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH 
-                . 'use_core_freeshipping_config', ScopeInterface::SCOPE_STORE );
+        return (bool)$this->scopeConfig->getValue(
+            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'use_core_freeshipping_config',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
+     * Get minimum order total required for free shipping (custom config).
+     *
      * @return float
      */
-    public function getOrderMinTotal()
+    public function getOrderMinTotal(): float
     {
         return (float)$this->scopeConfig->getValue(
-                self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH 
-                . 'order_min_total', ScopeInterface::SCOPE_STORE );
+            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'order_min_total',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
+     * Check if subtotal should be used instead of grand total.
+     *
+     * @return bool
+     */
+    public function getOrderSubtotal(): bool
+    {
+        return (bool)$this->scopeConfig->getValue(
+            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'use_order_subtotal',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Check if subtotal should include discounts.
+     *
+     * @return bool
+     */
+    public function getOrderSubtotalWithDiscount(): bool
+    {
+        return (bool)$this->scopeConfig->getValue(
+            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'order_subtotal_includes_discount',
+            ScopeInterface::SCOPE_STORE
+        );
+    }
+
+    /**
+     * Get minimum subtotal required for free shipping from Magento core config.
+     *
      * @return float
      */
-    public function getOrderSubtotal()
+    public function getCoreFreeShippingSubtotal(): float
     {
         return (float)$this->scopeConfig->getValue(
-                self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH 
-                . 'use_order_subtotal', ScopeInterface::SCOPE_STORE );
+            self::CORE_FREE_SHIPPING_STORE_CONFIG_PATH . 'free_shipping_subtotal',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get configured font size for indicator message.
+     *
+     * @return string|null
      */
-    public function getOrderSubtotalWithDiscount()
+    public function getFontSize(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH 
-                . 'order_subtotal_includes_discount', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'font_size',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get custom text message displayed when free shipping is not yet achieved.
+     *
+     * @return string|null
      */
-    public function getCoreFreeShippingSubtotal()
+    public function getTextMessage(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::CORE_FREE_SHIPPING_STORE_CONFIG_PATH 
-                . 'free_shipping_subtotal', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'text_message',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get text color for indicator message.
+     *
+     * @return string|null
      */
-    public function getFontSize()
+    public function getMessageTextColor(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'font_size', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'message_text_color',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get background color for indicator message.
+     *
+     * @return string|null
      */
-    public function getTextMessage()
+    public function getMessageBackground(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'text_message', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'message_background',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get progress bar color.
+     *
+     * @return string|null
      */
-    public function getMessageTextColor()
+    public function getProgressBarColor(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'message_text_color', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'progress_bar_color',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get message displayed when order is eligible for free shipping.
+     *
+     * @return string|null
      */
-    public function getMessageBackground()
+    public function getEligibleTextMessage(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'message_background', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'eligible_text_message',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 
     /**
-     * @return float
+     * Get custom CSS styles for indicator block.
+     *
+     * @return string|null
      */
-    public function getProgressBarColor()
+    public function getCustomCSS(): ?string
     {
         return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'progress_bar_color', ScopeInterface::SCOPE_STORE );
-    }
-
-    /**
-     * @return float
-     */
-    public function getEligibleTextMessage()
-    {
-        return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'eligible_text_message', ScopeInterface::SCOPE_STORE );
-    }
-
-    /**
-     * @return float
-     */
-    public function getCustomCSS()
-    {
-        return $this->scopeConfig->getValue(
-                self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH 
-                . 'custom_css', ScopeInterface::SCOPE_STORE );
+            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'custom_css',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 }

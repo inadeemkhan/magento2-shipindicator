@@ -15,7 +15,7 @@ This Magento 2 extension adds a visual indicator on the cart page to inform cust
 
 1. Copy the contents of this repository into:  
    ```bash
-   {MAGENTO_ROOT}/app/code/Nadeem/FreeShippingIndicator/
+   {MAGENTO_ROOT}/app/code/NadeemSoft/ShipIndicator/
    ```
 2. Run the following commands in your Magento root directory:  
    ```bash

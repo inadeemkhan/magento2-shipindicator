@@ -1,20 +1,16 @@
 <?xml version="1.0" ?>
-<!-- 
-/**
- * Copyright © Chris Mallory All rights reserved.
- * See COPYING.txt for license details.
- */ 
- -->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
-	<default>
-		<free_shipping_indicator>
-			<general>
-				<enable/>
-				<use_freeshipping_method_config/>
-				<min_total/>
-				<use_subtotal/>
-				<subtotal_includes_discount/>
-			</general>
-		</free_shipping_indicator>
-	</default>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+
+    <default>
+        <ship_indicator>
+            <general>
+                <is_enable>0</is_enable>
+                <use_core_freeshipping_config>0</use_core_freeshipping_config>
+                <order_min_total>0</order_min_total>
+                <use_order_subtotal>0</use_order_subtotal>
+                <order_subtotal_includes_discount>0</order_subtotal_includes_discount>
+            </general>
+        </ship_indicator>
+    </default>
 </config>

@@ -1,0 +1,25 @@
+.freeship-section p.message {
+    background-color: var(--freeship-bg-color);
+    color: var(--freeship-text-color);
+    font-size: var(--freeship-font-size);
+}
+
+.freeship-section p.message:after {
+    border-top: 20px solid var(--freeship-bg-color);
+}
+
+.freeship-section .freeship-indicator-wrapper span.min,
+.freeship-section .freeship-indicator-wrapper span.max {
+    background: var(--freeship-bg-color);
+}
+
+.freeship-text {
+    background-color: var(--freeship-bg-color);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.freeship-text p {
+    color: var(--freeship-text-color);
+    font-size: var(--freeship-font-size);
+}

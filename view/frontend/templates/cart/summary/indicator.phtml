@@ -1,49 +1,61 @@
 <?php
-/**
- * Copyright © Chris Mallory All rights reserved.
- * See COPYING.txt for license details.
- */
 declare(strict_types=1);
-echo "<style>".$block->getCustomCSS()."</style>";
+
+/**
+ * Free Shipping Indicator Template
+ *
+ * Renders the progress bar and message showing how close the customer
+ * is to achieving free shipping eligibility.
+ *
+ * @var \NadeemSoft\ShipIndicator\Block\Cart\Indicator $block
+ */
+
+// Render custom CSS defined in admin configuration
+echo '<style>' . $block->getCustomCSS() . '</style>';
 ?>
+
+<!-- Define CSS variables for dynamic values -->
+<style>
+:root {
+    --freeship-bg-color: <?= /* @noEscape */ $block->getMessageBackground() ?>;
+    --freeship-text-color: <?= /* @noEscape */ $block->getMessageTextColor() ?>;
+    --freeship-font-size: <?= /* @noEscape */ $block->getFontSize() ?>px;
+    --freeship-progress-color: <?= /* @noEscape */ $block->getProgressBarColor() ?>;
+}
+</style>
+
 <div class="freeship-section">
     <?php if (!$block->isOrderEligibleForFreeShipping()): ?>
-        <?php
-        $freeshippingProgress = $block->getFreeShippingCompletionRate();
-        $background = "background: linear-gradient(to right, ".$block->getProgressBarColor()." 0%, ".$block->getProgressBarColor()." "
-            . $freeshippingProgress . "%, ".$block->getProgressBarColor().");";
-        if ($freeshippingProgress > 90) {
-            $background = "background: linear-gradient(to right, ".$block->getProgressBarColor()." 0%, ".$block->getProgressBarColor()." 85%, ".$block->getProgressBarColor()."));";
-        }
-        ?>
+        <?php $freeshippingProgress = $block->getFreeShippingCompletionRate(); ?>
+
         <div class="freeship-indicator-wrapper">
+            <!-- Minimum threshold marker -->
             <span class="min"><?= /* @noEscape */ $block->getFormattedPrice(0, 0) ?></span>
+
+            <!-- Progress bar -->
             <div class="freeship-indicator">
                 <div class="freeship-indicator-bg">
                     <div class="freeship-indicator-fill freeship-indicator-progress"
-                        style="width: <?= /* @noEscape */ $block->getFreeShippingCompletionRate() ?>%;
-                        <?= /* @noEscape */ $background ?>">
+                         style="width: <?= /* @noEscape */ $freeshippingProgress ?>%;">
                     </div>
                 </div>
             </div>
+
+            <!-- Maximum threshold marker -->
             <span class="max"><?= /* @noEscape */ $block->getFormattedPrice($block->getFreeShippingMinValue(), 0) ?></span>
         </div>
-        <p style="<?php echo ("background-color: ".$block->getMessageBackground()."; color: ".$block->getMessageTextColor()."; font-size: ".$block->getFontSize()."px;") ?>" class="message">
-        <?= /* @noEscape */ __($block->getTextMessage().' <span class="freeship-price">%1</span>', 
-            $block->getFormattedPrice($block->getFreeShippingAmountDifference())) ?>
+
+        <!-- Message showing remaining amount -->
+        <p class="message">
+            <?= /* @noEscape */ __(
+                $block->getTextMessage() . ' <span class="freeship-price">%1</span>',
+                $block->getFormattedPrice($block->getFreeShippingAmountDifference())
+            ) ?>
         </p>
-        <style>
-        .freeship-section p.message:after {
-            border-top: 20px solid <?= /* @noEscape */ __($block->getMessageBackground()) ?>;
-        }
-        .freeship-section .freeship-indicator-wrapper span.min,
-        .freeship-section .freeship-indicator-wrapper span.max {
-            background: <?= /* @noEscape */ __($block->getMessageBackground()) ?>;
-        }
-        </style>
     <?php else: ?>
-        <div style="<?php echo ("background-color: ".$block->getMessageBackground()) ?>" class="freeship-text">
-            <p style="<?php echo ("color: ".$block->getMessageTextColor()."; font-size: ".$block->getFontSize()."px;") ?>"><?= /* @noEscape */ __($block->getEligibleTextMessage()) ?></p>
+        <!-- Message when order is eligible for free shipping -->
+        <div class="freeship-text">
+            <p><?= /* @noEscape */ __($block->getEligibleTextMessage()) ?></p>
         </div>
     <?php endif; ?>
 </div>
