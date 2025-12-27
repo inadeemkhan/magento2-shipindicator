@@ -1,0 +1,31 @@
+<div class="ship-indicator-checkout-container">
+    <div class="free-shipping-wrapper">
+        
+        <div class="progress-track">
+            <span class="price-circle" 
+                  data-bind="style: { background: config.bgColor, color: config.textColor }">$0</span>
+            
+            <div class="progress-bar-bg">
+                <div class="progress-fill" 
+                     data-bind="style: { width: getBarWidth(), background: config.barColor }">
+                </div>
+            </div>
+
+            <span class="price-circle" 
+                  data-bind="style: { background: config.bgColor, color: config.textColor }, text: '$' + threshold"></span>
+        </div>
+
+        <div class="shipping-message-box" 
+             data-bind="style: { background: config.bgColor, color: config.textColor, fontSize: config.fontSize + 'px' }">
+            
+            <div class="arrow-up" data-bind="style: { borderBottom: '6px solid ' + config.bgColor }"></div>
+            
+            <span data-bind="text: config.msgText"></span> 
+            <span data-bind="text: getRemainingAmount()"></span>
+        </div>
+    </div>
+    <div class="success-msg" data-bind="if: config.successMsg, style: { color: config.barColor }" 
+             style="text-align: center; font-weight: bold; padding: 10px;">
+            <span data-bind="text: config.successMsg"></span>
+        </div>
+    </div>
