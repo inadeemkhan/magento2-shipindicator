@@ -1,15 +1,17 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      layout="1column"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="NadeemSoft_ShipIndicator::css/_styles.css"/>
+        <css src="NadeemSoft_ShipIndicator::css/indicator.css"/>
+    </head>
 
     <body>
-        <referenceContainer name="cart.summary">
+        <referenceContainer name="minicart.addons">
             <block class="NadeemSoft\ShipIndicator\Block\Cart\Indicator"
-                   name="checkout.cart.shipindicator"
+                   name="nadeemsoft.shipindicator.minicart"
                    template="NadeemSoft_ShipIndicator::cart/summary/indicator.phtml"
-                   before="checkout.cart.shipping"
-                   ifconfig="ship_indicator/general/is_enable"/>
+                   before="-"/>
         </referenceContainer>
     </body>
 </page>

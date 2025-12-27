@@ -4,17 +4,32 @@ declare(strict_types=1);
 /**
  * Free Shipping Indicator Template
  *
- * Renders the progress bar and message showing how close the customer
- * is to achieving free shipping eligibility.
- *
  * @var \NadeemSoft\ShipIndicator\Block\Cart\Indicator $block
  */
 
-// Render custom CSS defined in admin configuration
-echo '<style>' . $block->getCustomCSS() . '</style>';
+/**
+ * Do not render if:
+ * - Module is disabled
+ * - Quote is not initialized
+ * - Cart is empty (homepage, CMS pages, etc.)
+ */
+if (!$block->canRender()) {
+    return;
+}
+
+/* Render custom CSS from admin */
+$customCss = trim($block->getCustomCSS());
+if ($customCss !== '') {
+    echo '<style>' . $customCss . '</style>';
+}
+
+/* Pre-calculate values safely */
+$isEligible   = $block->isOrderEligibleForFreeShipping();
+$progress     = min(100, max(0, $block->getFreeShippingCompletionRate()));
+$minValue     = $block->getFreeShippingMinValue();
+$remainingAmt = $block->getFreeShippingAmountDifference();
 ?>
 
-<!-- Define CSS variables for dynamic values -->
 <style>
 :root {
     --freeship-bg-color: <?= /* @noEscape */ $block->getMessageBackground() ?>;
@@ -25,37 +40,49 @@ echo '<style>' . $block->getCustomCSS() . '</style>';
 </style>
 
 <div class="freeship-section">
-    <?php if (!$block->isOrderEligibleForFreeShipping()): ?>
-        <?php $freeshippingProgress = $block->getFreeShippingCompletionRate(); ?>
+
+    <?php if (!$isEligible): ?>
 
         <div class="freeship-indicator-wrapper">
-            <!-- Minimum threshold marker -->
-            <span class="min"><?= /* @noEscape */ $block->getFormattedPrice(0, 0) ?></span>
+
+            <!-- Minimum threshold -->
+            <span class="min">
+                <?= /* @noEscape */ $block->getFormattedPrice(0, 0) ?>
+            </span>
 
             <!-- Progress bar -->
             <div class="freeship-indicator">
                 <div class="freeship-indicator-bg">
                     <div class="freeship-indicator-fill freeship-indicator-progress"
-                         style="width: <?= /* @noEscape */ $freeshippingProgress ?>%;">
+                         style="width: <?= /* @noEscape */ $progress ?>%;">
                     </div>
                 </div>
             </div>
 
-            <!-- Maximum threshold marker -->
-            <span class="max"><?= /* @noEscape */ $block->getFormattedPrice($block->getFreeShippingMinValue(), 0) ?></span>
+            <!-- Maximum threshold -->
+            <span class="max">
+                <?= /* @noEscape */ $block->getFormattedPrice($minValue, 0) ?>
+            </span>
         </div>
 
-        <!-- Message showing remaining amount -->
-        <p class="message">
-            <?= /* @noEscape */ __(
-                $block->getTextMessage() . ' <span class="freeship-price">%1</span>',
-                $block->getFormattedPrice($block->getFreeShippingAmountDifference())
-            ) ?>
-        </p>
+        <!-- Remaining amount message -->
+        <?php if ($remainingAmt > 0): ?>
+            <p class="message">
+                <?= /* @noEscape */ __(
+                    '%1 <span class="freeship-price">%2</span>',
+                    $block->getTextMessage(),
+                    $block->getFormattedPrice($remainingAmt)
+                ) ?>
+            </p>
+        <?php endif; ?>
+
     <?php else: ?>
-        <!-- Message when order is eligible for free shipping -->
+
+        <!-- Eligible message -->
         <div class="freeship-text">
             <p><?= /* @noEscape */ __($block->getEligibleTextMessage()) ?></p>
         </div>
+
     <?php endif; ?>
+
 </div>

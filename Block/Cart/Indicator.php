@@ -30,12 +30,6 @@ class Indicator extends Template
 
     /**
      * Indicator constructor.
-     *
-     * @param Context $context Rendering context for the block
-     * @param Session $session Checkout session instance
-     * @param PriceCurrencyInterface $priceCurrency Currency formatter
-     * @param Data $helper Module helper instance
-     * @param array $data Additional block data
      */
     public function __construct(
         Context $context,
@@ -51,25 +45,36 @@ class Indicator extends Template
     }
 
     /**
+     * Check if quote exists and contains items
+     */
+    public function hasValidQuote(): bool
+    {
+        $quote = $this->session->getQuote();
+        return $quote !== null && (int)$quote->getItemsCount() > 0;
+    }
+
+    /**
+     * Determine whether the indicator can be rendered
+     */
+    public function canRender(): bool
+    {
+        return $this->helper->isEnable() && $this->hasValidQuote();
+    }
+
+    /**
      * Retrieve the minimum order total required to qualify for free shipping.
-     * 
-     * This value is determined either by the configured free shipping method
-     * or by the custom module configuration, depending on settings.
-     *
-     * @return float Minimum order total threshold
      */
     public function getFreeShippingMinValue(): float
     {
         if ($this->helper->isEnable() && $this->helper->getCoreShippingConfig()) {
             return (float)$this->getFreeShippingMethodMinValue();
         }
+
         return (float)$this->helper->getOrderMinTotal();
     }
 
     /**
      * Retrieve the minimum subtotal configured in Magento's core free shipping method.
-     *
-     * @return float Configured free shipping subtotal
      */
     public function getFreeShippingMethodMinValue(): float
     {
@@ -77,20 +82,18 @@ class Indicator extends Template
     }
 
     /**
-     * Get the current cart total based on configuration.
-     * 
-     * Depending on helper settings, this may return:
-     * - Grand total
-     * - Subtotal with discount
-     * - Subtotal without discount
+     * Get the current cart total safely.
      *
-     * @return float Current cart total
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function getCurrentTotal(): float
     {
         $quote = $this->session->getQuote();
+
+        if (!$quote || !$quote->getItemsCount()) {
+            return 0.0;
+        }
 
         if (!$this->helper->getOrderSubtotal()) {
             return (float)$quote->getGrandTotal();
@@ -104,18 +107,14 @@ class Indicator extends Template
     }
 
     /**
-     * Check if the current cart/order total qualifies for free shipping.
-     * 
-     * This method validates module enablement and compares the current cart total
-     * against the configured free shipping threshold.
+     * Check if the order qualifies for free shipping.
      *
-     * @return bool True if eligible, false otherwise
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function isOrderEligibleForFreeShipping(): bool
     {
-        if (!$this->helper->isEnable()) {
+        if (!$this->canRender()) {
             return false;
         }
 
@@ -129,11 +128,7 @@ class Indicator extends Template
     }
 
     /**
-     * Format a price value into the store currency.
-     *
-     * @param float $price Price to format
-     * @param int $precision Decimal precision
-     * @return string Formatted price string
+     * Format price in store currency.
      */
     public function getFormattedPrice(float $price, int $precision = 2): string
     {
@@ -141,107 +136,76 @@ class Indicator extends Template
     }
 
     /**
-     * Calculate the remaining amount required to reach free shipping eligibility.
+     * Remaining amount to reach free shipping.
      *
-     * @return float Difference between threshold and current total
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function getFreeShippingAmountDifference(): float
     {
-        return $this->getFreeShippingMinValue() - $this->getCurrentTotal();
+        $difference = $this->getFreeShippingMinValue() - $this->getCurrentTotal();
+        return max(0.0, $difference);
     }
 
     /**
-     * Calculate the percentage progress towards free shipping eligibility.
+     * Progress percentage toward free shipping.
      *
-     * @return float Completion rate percentage (0–100)
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function getFreeShippingCompletionRate(): float
     {
         $minValue = $this->getFreeShippingMinValue();
-        return $minValue > 0 ? ($this->getCurrentTotal() / $minValue) * 100 : 0.0;
+
+        if ($minValue <= 0 || !$this->hasValidQuote()) {
+            return 0.0;
+        }
+
+        $rate = ($this->getCurrentTotal() / $minValue) * 100;
+        return min(100.0, $rate);
     }
 
     /**
-     * Check if the module is enabled in configuration.
-     *
-     * @return bool Module enablement status
+     * Module enable check.
      */
     public function isModuleEnable(): bool
     {
         return $this->helper->isEnable();
     }
 
-    /**
-     * Retrieve the configured font size for the indicator message.
-     *
-     * @return string Font size value
-     */
     public function getFontSize(): string
     {
-        return $this->helper->getFontSize() ?: "14";
+        return $this->helper->getFontSize() ?: '14';
     }
 
-    /**
-     * Retrieve the configured text message displayed when free shipping is not yet achieved.
-     *
-     * @return string Custom or default message
-     */
     public function getTextMessage(): string
     {
-        return $this->helper->getTextMessage() ?: "To get FREE SHIPPING, add ";
+        return $this->helper->getTextMessage() ?: 'To get FREE SHIPPING, add ';
     }
 
-    /**
-     * Retrieve the background color for the indicator message.
-     *
-     * @return string Hex color code or default
-     */
     public function getMessageBackground(): string
     {
-        return $this->helper->getMessageBackground() ?: "#ff5501";
+        return $this->helper->getMessageBackground() ?: '#ff5501';
     }
 
-    /**
-     * Retrieve the progress bar color used in the indicator.
-     *
-     * @return string Color value
-     */
     public function getProgressBarColor(): string
     {
-        return $this->helper->getProgressBarColor() ?: "red";
+        return $this->helper->getProgressBarColor() ?: 'red';
     }
 
-    /**
-     * Retrieve any custom CSS applied to the indicator block.
-     *
-     * @return string CSS string
-     */
     public function getCustomCSS(): string
     {
-        return $this->helper->getCustomCSS() ?: "";
+        return $this->helper->getCustomCSS() ?: '';
     }
 
-    /**
-     * Retrieve the text color for the indicator message.
-     *
-     * @return string Color value
-     */
     public function getMessageTextColor(): string
     {
-        return $this->helper->getMessageTextColor() ?: "red";
+        return $this->helper->getMessageTextColor() ?: 'red';
     }
 
-    /**
-     * Retrieve the message displayed when the order is eligible for free shipping.
-     *
-     * @return string Custom or default eligible message
-     */
     public function getEligibleTextMessage(): string
     {
-        return $this->helper->getEligibleTextMessage() ?: "Your order is eligible for FREE SHIPPING.";
+        return $this->helper->getEligibleTextMessage()
+            ?: 'Your order is eligible for FREE SHIPPING.';
     }
 }
