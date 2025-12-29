@@ -24,6 +24,9 @@
 **Cart Page Indicator**  
 ![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-cart-page.png) 
 
+**Minicart Indicator**  
+![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-minicart.png) 
+
 **Checkout Page Indicator**  
 ![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-checkout-page.png) 
 
