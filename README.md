@@ -1,14 +1,8 @@
 # Magento 2 Extension — Free Shipping Indicator  
 
-![Magento](https://img.shields.io/badge/Magento-2.x-orange?logo=magento)  
-![PHP](https://img.shields.io/badge/PHP-7.x-blue?logo=php)  
-![License](https://img.shields.io/badge/License-MIT-green)  
-![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen)  
-
-**Author:** Nadeem Khan  
-
-This Magento 2 extension adds a visual indicator on the cart page to inform customers how close they are to qualifying for free shipping. This helps improve the shopping experience and can encourage customers to increase their cart value.  
-
+![Magento](https://img.shields.io/badge/Magento-2.x-orange?logo=magento)  ![PHP](https://img.shields.io/badge/PHP-7.x-blue?logo=php)  ![License](https://img.shields.io/badge/License-MIT-green)  ![Contributions](https://img.shields.io/badge/Contributions-Welcome-brightgreen)  
+  
+This Magento 2 extension provides a clear visual indicator on the cart page, informing customers how close they are to qualifying for free shipping. It enhances the overall shopping experience and helps encourage higher cart values.
 ---
 
 ## Installation  
@@ -23,30 +17,29 @@ This Magento 2 extension adds a visual indicator on the cart page to inform cust
    php bin/magento setup:static-content:deploy
    php bin/magento cache:flush
    ```
-
 ---
 
 ## Screenshots  
 
 **Cart Page Indicator**  
-![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/FS-1.png)  
+![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-cart-page.png) 
+
+**Checkout Page Indicator**  
+![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-checkout-page.png) 
 
 **Configuration Settings**  
-![Configuration](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/FS-2.png)  
-
-**Customization Options**  
-![Customization](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/FS-3.png)  
+![Configuration](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-configuration.png)  
 
 ---
 
 ## Prerequisites  
 
-Ensure the following requirements are met before installing this extension:  
+Ensure the following requirements are met before installing this extension:
 
 | Prerequisite | How to Check | Documentation |
 |--------------|--------------|---------------|
-| Apache 2.2 / 2.4 | `apache2 -v` (Ubuntu)<br>`httpd -v` (CentOS) | [Apache Docs](https://devdocs.magento.com/guides/v2.2/install-gde/prereq/apache.html) |
-| PHP 7.x.x | `php -v` | [PHP on Ubuntu](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/php-ubuntu.html)<br>[PHP on CentOS](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/php-centos.html) |
+| Apache 2.4 / Nginx | `apache2 -v` (Ubuntu)<br>`httpd -v` (CentOS) <br>`nginx -v` | [Apache Docs](https://devdocs.magento.com/guides/v2.2/install-gde/prereq/apache.html) <br> [NGINX Docs](https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/)|
+| PHP >= 8.1 | `php -v` | [PHP on Ubuntu](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/php-ubuntu.html)<br>[PHP on CentOS](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/php-centos.html) |
 | MySQL 5.6.x | `mysql -u [root username] -p` | [MySQL Docs](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/mysql.html) |
 
 ---
