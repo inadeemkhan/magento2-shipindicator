@@ -24,9 +24,6 @@
 **Cart Page Indicator**  
 ![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-cart-page.png) 
 
-**Minicart Indicator**  
-![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-minicart.png) 
-
 **Configuration Settings**  
 ![Configuration](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-configuration.png)  
 
@@ -38,7 +35,7 @@ Ensure the following requirements are met before installing this extension:
 
 | Prerequisite | How to Check | Documentation |
 |--------------|--------------|---------------|
-| Apache 2.4 / Nginx | `apache2 -v` (Ubuntu)<br>`httpd -v` (CentOS) <br>`nginx -v` | [Apache Docs](https://devdocs.magento.com/guides/v2.2/install-gde/prereq/apache.html) <br> [NGINX Docs](https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/)|
+| Apache / Nginx | `apache2 -v` (Ubuntu)<br><br>`nginx -v` | [Apache Docs](https://devdocs.magento.com/guides/v2.2/install-gde/prereq/apache.html) <br> [Nginx Docs](https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/)|
 | PHP >= 8.1 | `php -v` | [PHP on Ubuntu](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/php-ubuntu.html)<br>[PHP on CentOS](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/php-centos.html) |
 | MySQL 5.6.x | `mysql -u [root username] -p` | [MySQL Docs](http://devdocs.magento.com/guides/v2.2/install-gde/prereq/mysql.html) |
 
