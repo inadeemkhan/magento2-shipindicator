@@ -28,12 +28,13 @@ class Colorpicker extends Field
     protected function _getElementHtml(AbstractElement $element): string
     {
         $html = $element->getElementHtml();
-        $value = (string)$element->getData('value');
+        $value = $this->escapeJs((string)$element->getData('value'));
+        $htmlId = $this->escapeJs((string)$element->getHtmlId());
 
         $html .= '<script type="text/javascript">
             require(["jquery","jquery/colorpicker/js/colorpicker"], function ($) {
                 $(document).ready(function () {
-                    var thisElement = $("#' . $element->getHtmlId() . '");
+                    var thisElement = $("#' . $htmlId . '");
                     thisElement.css("backgroundColor", "' . $value . '");
                     thisElement.ColorPicker({
                         color: "' . $value . '",

@@ -6,117 +6,114 @@ namespace NadeemSoft\ShipIndicator\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Store\Model\ScopeInterface;
 
+/**
+ * Typed access to the module and core free shipping configuration.
+ */
 class Data extends AbstractHelper
 {
-    protected const CORE_FREE_SHIPPING_STORE_CONFIG_PATH = 'carriers/freeshipping/';
-    protected const FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH = 'ship_indicator/general/';
-    protected const INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH = 'ship_indicator/customization/';
+    private const CORE_PATH = 'carriers/freeshipping/';
+    private const GENERAL_PATH = 'ship_indicator/general/';
+    private const CUSTOM_PATH = 'ship_indicator/customization/';
 
     /**
-     * Check if the Free Shipping Indicator module is enabled.
+     * Read a config value in store scope.
      */
+    private function getConfig(string $path): mixed
+    {
+        return $this->scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE);
+    }
+
+    private function getFlag(string $path): bool
+    {
+        return $this->scopeConfig->isSetFlag($path, ScopeInterface::SCOPE_STORE);
+    }
+
+    private function getString(string $path): string
+    {
+        return trim((string)$this->getConfig($path));
+    }
+
     public function isEnable(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
-            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'is_enable',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getFlag(self::GENERAL_PATH . 'is_enable');
     }
 
-    public function getCoreShippingConfig(): bool
+    public function useCoreConfig(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
-            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'use_core_freeshipping_config',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getFlag(self::GENERAL_PATH . 'use_core_freeshipping_config');
     }
 
+    /**
+     * Minimum amount (base currency) for the custom threshold.
+     */
     public function getOrderMinTotal(): float
     {
-        return (float) $this->scopeConfig->getValue(
-            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'order_min_total',
-            ScopeInterface::SCOPE_STORE
-        );
+        return (float)$this->getConfig(self::GENERAL_PATH . 'order_min_total');
     }
 
-    public function getOrderSubtotal(): bool
+    public function includeTax(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
-            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'use_order_subtotal',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getFlag(self::GENERAL_PATH . 'include_tax');
     }
 
-    public function getOrderSubtotalWithDiscount(): bool
+    public function includeDiscount(): bool
     {
-        return (bool) $this->scopeConfig->getValue(
-            self::FREE_SHIPPING_INDICATOR_XML_CONFIG_PATH . 'order_subtotal_includes_discount',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getFlag(self::GENERAL_PATH . 'order_subtotal_includes_discount');
     }
 
+    public function isCoreFreeShippingActive(): bool
+    {
+        return $this->getFlag(self::CORE_PATH . 'active');
+    }
+
+    /**
+     * Core free shipping threshold (base currency).
+     */
     public function getCoreFreeShippingSubtotal(): float
     {
-        return (float) $this->scopeConfig->getValue(
-            self::CORE_FREE_SHIPPING_STORE_CONFIG_PATH . 'free_shipping_subtotal',
-            ScopeInterface::SCOPE_STORE
-        );
+        return (float)$this->getConfig(self::CORE_PATH . 'free_shipping_subtotal');
     }
 
-    public function getFontSize(): ?string
+    /**
+     * Core "Include Tax to Amount" flag.
+     */
+    public function coreIncludesTax(): bool
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'font_size',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getFlag(self::CORE_PATH . 'tax_including');
     }
 
-    public function getTextMessage(): ?string
+    public function getFontSize(): string
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'text_message',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getString(self::CUSTOM_PATH . 'font_size');
     }
 
-    public function getMessageTextColor(): ?string
+    public function getTextMessage(): string
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'message_text_color',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getString(self::CUSTOM_PATH . 'text_message');
     }
 
-    public function getMessageBackground(): ?string
+    public function getMessageTextColor(): string
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'message_background',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getString(self::CUSTOM_PATH . 'message_text_color');
     }
 
-    public function getProgressBarColor(): ?string
+    public function getMessageBackground(): string
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'progress_bar_color',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getString(self::CUSTOM_PATH . 'message_background');
     }
 
-    public function getEligibleTextMessage(): ?string
+    public function getProgressBarColor(): string
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'eligible_text_message',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getString(self::CUSTOM_PATH . 'progress_bar_color');
     }
 
-    public function getCustomCSS(): ?string
+    public function getEligibleTextMessage(): string
     {
-        return $this->scopeConfig->getValue(
-            self::INDICATOR_CUSTOMIZATION_XML_CONFIG_PATH . 'custom_css',
-            ScopeInterface::SCOPE_STORE
-        );
+        return $this->getString(self::CUSTOM_PATH . 'eligible_text_message');
+    }
+
+    public function getCustomCSS(): string
+    {
+        return $this->getString(self::CUSTOM_PATH . 'custom_css');
     }
 }
-  

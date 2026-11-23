@@ -55,12 +55,12 @@
                     </depends>
                 </field>
 
-                <field id="use_order_subtotal" type="select" sortOrder="50"
+                <field id="include_tax" type="select" sortOrder="50"
                        showInWebsite="1" showInStore="1" showInDefault="1"
                        translate="label">
-                    <label>Use Subtotal</label>
+                    <label>Include Tax in Amount</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If set to No, the grand total will be used instead.</comment>
+                    <comment>Yes: compare the cart amount including tax (use this if your catalog prices/subtotal are shown including tax). No: compare the amount excluding tax. Shipping cost is never counted. When using the core config, Magento's "Include Tax to Amount" setting of the Free Shipping method is followed instead.</comment>
                     <depends>
                         <field id="is_enable">1</field>
                         <field id="use_core_freeshipping_config">0</field>
@@ -70,13 +70,12 @@
                 <field id="order_subtotal_includes_discount" type="select" sortOrder="60"
                        showInWebsite="1" showInStore="1" showInDefault="1"
                        translate="label">
-                    <label>Order Subtotal Includes Discount</label>
+                    <label>Subtract Discounts</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>If set to Yes, the subtotal minus discounts will be used to determine eligibility.</comment>
+                    <comment>Yes: discounts are subtracted before comparing with the minimum. No: the amount before discounts is used.</comment>
                     <depends>
                         <field id="is_enable">1</field>
                         <field id="use_core_freeshipping_config">0</field>
-                        <field id="use_order_subtotal">1</field>
                     </depends>
                 </field>
             </group>
