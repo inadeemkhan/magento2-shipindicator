@@ -8,9 +8,17 @@
                 <is_enable>0</is_enable>
                 <use_core_freeshipping_config>0</use_core_freeshipping_config>
                 <order_min_total>0</order_min_total>
-                <use_order_subtotal>0</use_order_subtotal>
-                <order_subtotal_includes_discount>0</order_subtotal_includes_discount>
+                <include_tax>0</include_tax>
+                <order_subtotal_includes_discount>1</order_subtotal_includes_discount>
             </general>
+            <customization>
+                <font_size>14</font_size>
+                <text_message>To get FREE SHIPPING, add</text_message>
+                <eligible_text_message>Your order is eligible for FREE SHIPPING.</eligible_text_message>
+                <message_text_color>#ffffff</message_text_color>
+                <message_background>#ff5501</message_background>
+                <progress_bar_color>#ff5501</progress_bar_color>
+            </customization>
         </ship_indicator>
     </default>
 </config>
