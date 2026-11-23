@@ -82,10 +82,10 @@ Reported issue: *"I have subtotal including tax. Subtotal is calculated without 
 ## Screenshots  
 
 **Cart Page Indicator**  
-![Cart Page](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-cart-page.png) 
+![Cart Page Indicator](screenshots/cart-page.png)
 
 **Configuration Settings**  
-![Configuration](https://github.com/inadeemkhan/magento2-images/blob/master/Free_Shipping_Indicator/new-configuration.png)  
+![Configuration Settings](screenshots/admin-config.png)
 
 ---
 
